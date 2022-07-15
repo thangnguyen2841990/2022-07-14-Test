@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -25,12 +26,14 @@ public class ProductRestController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_SHOP')")
     @PostMapping
     public ResponseEntity<Product> save(@RequestBody Product product) {
         Product newProduct = this.productService.save(product);
         return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ROLE_SHOP')")
     @PutMapping("/product/{productId}")
     public ResponseEntity<Product> update(@PathVariable Long productId, @RequestBody Product product) {
         Optional<Product> productOptional = this.productService.findById(productId);
@@ -45,10 +48,10 @@ public class ProductRestController {
         newProduct.setImages(product.getImages());
 
         this.productService.save(newProduct);
-
         return new ResponseEntity<>(newProduct, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_SHOP')")
     @DeleteMapping("/productId/{productId}")
     public ResponseEntity<Product> delete(@PathVariable Long productId) {
         Optional<Product> productOptional = this.productService.findById(productId);

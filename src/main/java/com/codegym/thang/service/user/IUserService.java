@@ -13,4 +13,10 @@ public interface IUserService extends UserDetailsService {
     Optional<User> findById(Long id);
     User save(User user);
     void remove(Long id);
+    User saveShop(User user);
+    User saveAdmin(User user);
+    User saveUser(User user);
+
+    User findByUsername(String username);
+
 }
